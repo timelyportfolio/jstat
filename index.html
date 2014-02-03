@@ -24,13 +24,28 @@
               .height(height);
 
           var qq_g = d3.select("#qqplot").append("svg")
-            .attr("width",width - margin.right - margin.left)
-            .attr("height", height - margin.top - margin.bottom )
+            .attr("width", width - margin.right - margin.left)
+            .attr("height", height - margin.top - margin.bottom)
             .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+          //make some data with jstat
+          var x = d3.range(100).map(function (d) {
+            return (jStat.normal.sample(0, 1))
+          });
+          var y = d3.range(100).map(function (d) {
+            return (jStat.normal.sample(0, 1))
+          });
 
+          //x = x.sort(d3.ascending);
 
+          var data = [{x: x, y: y}];
+
+          qq_g
+            .data(data);
+            //.domain(d3.extent());
+
+          qq_g.call(chart);
 
         </script>
     </body>
