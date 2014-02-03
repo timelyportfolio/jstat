@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <script src="./src/core.js"></script>
+        <script src="./src/distribution.js"></script>
+        <script src="./src/special.js"></script>
+        <script src="./src/vector.js"></script>
+        <script src="./build/d3.v3.js"></script>
+        <script src="./build/qq.js"></script>
+        <title>jStat</title>
+    </head>
+    <body>
+        <div id="qqplot">
+        </div>
+        <script>
+          var width = 270,
+              height = 270,
+              margin = { top: 20, right: 10, bottom: 20, left: 35 }
+
+          var chart = d3.qq()
+              .width(width)
+              .height(height);
+
+          var qq_g = d3.select("#qqplot").append("svg")
+            .attr("width",width - margin.right - margin.left)
+            .attr("height", height - margin.top - margin.bottom )
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+        </script>
+    </body>
+</html>
