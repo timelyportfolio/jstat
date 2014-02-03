@@ -14,10 +14,12 @@
     <body>
         <div id="qqplot">
         </div>
+
         <script>
           var width = 270,
               height = 270,
-              margin = { top: 20, right: 10, bottom: 20, left: 35 }
+              margin = { top: 20, right: 10, bottom: 20, left: 35 },
+              n = 10000;
 
           var chart = d3.qq()
               .width(width)
@@ -30,16 +32,31 @@
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
           //make some data with jstat
-          var x = d3.range(1000).map(function (d) {
+          //should be able to get rid of this
+          //used originally to get to know qqplot
+          var x = d3.range(n).map(function (d) {
             return (jStat.normal.sample(0, 1))
           });
-          var y = d3.range(1000).map(function (d) {
+
+          var y = d3.range(n).map(function (d) {
             return (jStat.normal.sample(0, 1))
           });
+
+          //work on getting quantiles at normal distribution points like lattice qqmath
+          //R does qnorm(ppoints(x.length))
+          //source: R docs for ppoints
+          //Description
+          //Generates the sequence of probability points (1:m - a)/(m + (1-a)-a) where m is either n, if length(n)==1, or length(n).
+          //Usage
+          //ppoints(n, a = ifelse(n <= 10, 3/8, 1/2))
+          //this gets us ppoints
+          var ppoints = jStat.seq(0 + (1 - 0.5) / n, (n - (1 - 0.5)) / n, n)
+          //this gets us qnorm
+          var qnorm = ppoints.map(function (d) { return jStat.normal.inv(d, 0, 1) })
 
           //x = x.sort(d3.ascending);
 
-          var data = [{ x: x, y: y}];
+          var data = [{ x: qnorm, y: y}];
 
           //chart.domain([-3, 3]);
           chart.domain([Math.round(d3.min([d3.min(data[0].x), d3.min(data[0].y)])), Math.round(d3.max([d3.max(data[0].x), d3.max(data[0].y)]))]);
