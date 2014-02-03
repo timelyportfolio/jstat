@@ -24,26 +24,28 @@
               .height(height);
 
           var qq_g = d3.select("#qqplot").append("svg")
-            .attr("width", width - margin.right - margin.left)
-            .attr("height", height - margin.top - margin.bottom)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
             .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
           //make some data with jstat
-          var x = d3.range(100).map(function (d) {
+          var x = d3.range(1000).map(function (d) {
             return (jStat.normal.sample(0, 1))
           });
-          var y = d3.range(100).map(function (d) {
+          var y = d3.range(1000).map(function (d) {
             return (jStat.normal.sample(0, 1))
           });
 
           //x = x.sort(d3.ascending);
 
-          var data = [{x: x, y: y}];
+          var data = [{ x: x, y: y}];
+
+          //chart.domain([-3, 3]);
+          chart.domain([Math.round(d3.min([d3.min(data[0].x), d3.min(data[0].y)])), Math.round(d3.max([d3.max(data[0].x), d3.max(data[0].y)]))]);
 
           qq_g
             .data(data);
-            //.domain(d3.extent());
 
           qq_g.call(chart);
 
